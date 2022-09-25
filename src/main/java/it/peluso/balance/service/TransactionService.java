@@ -49,16 +49,11 @@ public class TransactionService {
         return new TransactionResponse(transactionModels);
     }
 
-    public TransactionResponse saveTransaction(TransactionRequest transactionRequest)
-            throws InvalidBusinessTransactionException {
-        try {
-            Transaction transaction = TransactionUtil.transactionRequestToEntity(transactionRequest);
-            Transaction response = repository.save(transaction);
-            return new TransactionResponse(
-                    Collections.singletonList(TransactionUtil.transactionEntityToResponseModel(response))
-            );
-        } catch (InvalidBusinessTransactionException e) {
-            throw new InvalidBusinessTransactionException(e.getMessage());
-        }
+    public TransactionResponse saveTransaction(TransactionRequest transactionRequest) throws InvalidBusinessTransactionException {
+        Transaction transaction = TransactionUtil.transactionRequestToEntity(transactionRequest);
+        Transaction response = repository.save(transaction);
+        return new TransactionResponse(
+                Collections.singletonList(TransactionUtil.transactionEntityToResponseModel(response))
+        );
     }
 }

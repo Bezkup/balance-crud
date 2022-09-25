@@ -2,6 +2,7 @@ package it.peluso.balance.util;
 
 import it.peluso.balance.entity.Category;
 import it.peluso.balance.entity.Transaction;
+import it.peluso.balance.exception.BalanceErrors;
 import it.peluso.balance.exception.InvalidBusinessTransactionException;
 import it.peluso.balance.model.CategoryModel;
 import it.peluso.balance.model.TransactionModel;
@@ -28,16 +29,17 @@ public class TransactionUtil {
     public static Transaction transactionRequestToEntity(TransactionRequest transactionRequest)
             throws InvalidBusinessTransactionException {
 
-        if(isTransactionValid(transactionRequest)) {
-            Category category = categoryRequestToEntity(transactionRequest.getCategory());
-            return Transaction.builder()
-                    .transactionType(transactionRequest.getTransactionType())
-                    .amount(transactionRequest.getAmount())
-                    .transactionDate(transactionRequest.getTransactionDate())
-                    .category(category)
-                    .build();
-        }
-        throw new InvalidBusinessTransactionException("");
+        if (!isTransactionValid(transactionRequest))
+            throw new InvalidBusinessTransactionException(BalanceErrors.ERR_TRANSACTION_INVALID.message);
+
+        Category category = categoryRequestToEntity(transactionRequest.getCategory());
+        return Transaction.builder()
+                .transactionType(transactionRequest.getTransactionType())
+                .amount(transactionRequest.getAmount())
+                .transactionDate(transactionRequest.getTransactionDate())
+                .category(category)
+                .build();
+
     }
 
     public static TransactionModel transactionEntityToResponseModel(Transaction transaction) {
