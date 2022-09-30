@@ -24,3 +24,6 @@ build
 
 ### OTHER FILES ###
 /src/main/resources/application.properties
+.gitattributes
+balancedata
+.gitignore
