@@ -11,7 +11,6 @@ repositories {
     mavenLocal()
     mavenCentral()
 }
-
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-jdbc:2.7.3'
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa:2.7.3'
@@ -20,9 +19,11 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-oauth2-client:2.7.3'
     implementation 'org.springframework.boot:spring-boot-starter-security:2.7.3'
     implementation 'org.springframework.boot:spring-boot-starter-web:2.7.3'
-    implementation 'org.springframework.session:spring-session-jdbc:2.7.0'
+//    implementation 'org.springframework.session:spring-session-jdbc:2.7.0'
+    implementation 'javax.xml.bind:jaxb-api:2.3.1'
     compileOnly 'org.projectlombok:lombok:1.18.24'
     annotationProcessor 'org.projectlombok:lombok:1.18.24'
+    compileOnly "org.flywaydb:flyway-core:9.3.1"
     runtimeOnly 'org.springframework.boot:spring-boot-devtools:2.7.3'
     runtimeOnly 'org.postgresql:postgresql:42.5.0'
     testImplementation 'org.springframework.boot:spring-boot-starter-test:2.7.3'
