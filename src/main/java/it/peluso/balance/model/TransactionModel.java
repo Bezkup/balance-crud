@@ -28,10 +28,11 @@ public class TransactionModel {
 
     }
 
-    public TransactionModel(TransactionType transactionType,
-                            int amount,
-                            LocalDate transactionDate,
-                            CategoryModel category
+    public TransactionModel(
+            TransactionType transactionType,
+            int amount,
+            LocalDate transactionDate,
+            CategoryModel category
     ) {
         this.transactionType = transactionType;
         this.amount = amount;

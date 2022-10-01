@@ -26,8 +26,7 @@ public class TransactionUtil {
         return category;
     }
 
-    public static Transaction transactionRequestToEntity(TransactionRequest transactionRequest)
-            throws InvalidBusinessTransactionException {
+    public static Transaction transactionRequestToEntity(TransactionRequest transactionRequest) throws InvalidBusinessTransactionException {
 
         if (!isTransactionValid(transactionRequest))
             throw new InvalidBusinessTransactionException(BalanceErrors.ERR_TRANSACTION_INVALID.message);

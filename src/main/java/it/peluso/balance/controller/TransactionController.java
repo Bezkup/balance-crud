@@ -38,23 +38,7 @@ public class TransactionController {
     }
 
     @PostMapping
-    public ResponseEntity<TransactionResponse> createTransaction(
-            @RequestBody TransactionRequest request
-    ) {
-        try {
-            return
-                    new ResponseEntity<>(service.saveTransaction(request), HttpStatus.OK);
-        } catch (InvalidBusinessTransactionException e) {
-//            TransactionResponse responseError = TransactionResponse.builder()
-//                    .error(TransactionErrorResponse.builder()
-//                            .type("Unable to parse request") //need constants for this
-//                            .build()
-//                    ).build();
-            return null;
-//            return new ResponseEntity<Transaction>(
-//                    null,
-//                    HttpStatus.BAD_REQUEST
-//            );
-        }
+    public ResponseEntity<TransactionResponse> createTransaction(@RequestBody TransactionRequest request) throws InvalidBusinessTransactionException {
+        return new ResponseEntity<>(service.saveTransaction(request), HttpStatus.OK);
     }
 }

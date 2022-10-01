@@ -1,6 +1,8 @@
 package it.peluso.balance.controller;
 
+import it.peluso.balance.exception.InvalidBusinessTransactionException;
 import it.peluso.balance.model.response.TransactionResponse;
+import it.peluso.balance.service.TransactionService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -25,6 +27,9 @@ public class TransactionControllerTestClass {
     @Autowired
     private TestRestTemplate restTemplate;
 
+    @Autowired
+    private TransactionService transactionService;
+
     @Test
     @DisplayName("Get transactions by date interval")
     public void getTransactionsByDateTest() throws Exception {
@@ -45,5 +50,11 @@ public class TransactionControllerTestClass {
                 requestMap
         );
         Assertions.assertEquals(new ArrayList<>(), Objects.requireNonNull(response.getBody()).getResult());
+    }
+
+    @Test
+    @DisplayName("Check exception")
+    public void getCorrectException() {
+        Assertions.assertThrowsExactly(InvalidBusinessTransactionException.class, () -> transactionService.saveTransaction(null));
     }
 }
