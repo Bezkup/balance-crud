@@ -1,7 +1,6 @@
 package it.peluso.balance;
 
 import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.web.cors.CorsConfiguration;
@@ -12,7 +11,6 @@ import java.util.Arrays;
 import java.util.Collections;
 
 @SpringBootApplication
-@EnableAutoConfiguration
 public class BalanceApplication {
 
     public static void main(String[] args) {

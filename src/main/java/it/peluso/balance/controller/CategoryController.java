@@ -1,6 +1,7 @@
 package it.peluso.balance.controller;
 
 import it.peluso.balance.entity.Category;
+import it.peluso.balance.exception.CategoryNotFoundException;
 import it.peluso.balance.model.request.CategoryRequest;
 import it.peluso.balance.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +15,6 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/v1/categories")
 public class CategoryController {
-
     private final CategoryService service;
 
     @Autowired
@@ -22,7 +22,7 @@ public class CategoryController {
         this.service = service;
     }
 
-    @GetMapping
+    @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity<List<Category>> getAllCategory(){
         return new ResponseEntity<>(
                 service.findAllCategories(),
@@ -30,20 +30,24 @@ public class CategoryController {
         );
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<Category> getCategoryById(
-            @PathVariable long id
-    ){
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+    public ResponseEntity<Category> getCategoryById(@PathVariable long id) throws CategoryNotFoundException {
         return new ResponseEntity<>(
                 service.findCategoryByID(id),
                 HttpStatus.OK
         );
     }
 
+    @RequestMapping(params = "name", method = RequestMethod.GET)
+    public ResponseEntity<Long> getCategoryIDByName(@RequestParam(value="name") String name) throws CategoryNotFoundException {
+        return new ResponseEntity<>(
+                service.findCategoryIDByName(name),
+                HttpStatus.OK
+        );
+    }
+
     @PostMapping
-    public ResponseEntity<Category> createCategory(
-            @RequestBody CategoryRequest request
-    ) {
+    public ResponseEntity<Category> createCategory(@RequestBody CategoryRequest request) {
         try{
             return new ResponseEntity<>(
                     service.saveCategory(request),
