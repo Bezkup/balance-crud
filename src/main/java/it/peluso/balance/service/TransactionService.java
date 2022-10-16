@@ -1,6 +1,6 @@
 package it.peluso.balance.service;
 
-import it.peluso.balance.exception.InvalidBusinessTransactionException;
+import it.peluso.balance.exception.transaction.InvalidBusinessTransactionException;
 import it.peluso.balance.model.TransactionModel;
 import it.peluso.balance.model.request.TransactionRequest;
 import it.peluso.balance.entity.Transaction;

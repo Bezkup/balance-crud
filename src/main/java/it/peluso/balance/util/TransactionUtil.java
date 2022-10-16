@@ -3,7 +3,7 @@ package it.peluso.balance.util;
 import it.peluso.balance.entity.Category;
 import it.peluso.balance.entity.Transaction;
 import it.peluso.balance.exception.BalanceErrors;
-import it.peluso.balance.exception.InvalidBusinessTransactionException;
+import it.peluso.balance.exception.transaction.InvalidBusinessTransactionException;
 import it.peluso.balance.model.CategoryModel;
 import it.peluso.balance.model.TransactionModel;
 import it.peluso.balance.model.request.TransactionRequest;

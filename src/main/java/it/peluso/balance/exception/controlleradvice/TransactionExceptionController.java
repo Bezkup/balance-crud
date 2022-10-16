@@ -2,7 +2,7 @@ package it.peluso.balance.exception.controlleradvice;
 
 
 import it.peluso.balance.exception.ErrorResponse;
-import it.peluso.balance.exception.InvalidBusinessTransactionException;
+import it.peluso.balance.exception.transaction.InvalidBusinessTransactionException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -20,7 +20,7 @@ public class TransactionExceptionController {
         return new ErrorResponse(HttpStatus.BAD_REQUEST.value(), ex.getMessage());
     }
 
-    @ExceptionHandler(value = Exception.class)
+    @ExceptionHandler(value = HttpMessageNotReadableException.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public @ResponseBody ErrorResponse handleException(HttpMessageNotReadableException ex)
     {

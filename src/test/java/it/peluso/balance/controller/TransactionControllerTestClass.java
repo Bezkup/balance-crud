@@ -1,6 +1,6 @@
 package it.peluso.balance.controller;
 
-import it.peluso.balance.exception.InvalidBusinessTransactionException;
+import it.peluso.balance.exception.transaction.InvalidBusinessTransactionException;
 import it.peluso.balance.model.response.TransactionResponse;
 import it.peluso.balance.service.TransactionService;
 import org.junit.jupiter.api.Assertions;

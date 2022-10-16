@@ -1,7 +1,8 @@
 package it.peluso.balance.controller;
 
 import it.peluso.balance.entity.Category;
-import it.peluso.balance.exception.CategoryNotFoundException;
+import it.peluso.balance.exception.category.CategoryAlreadyExistsException;
+import it.peluso.balance.exception.category.CategoryNotFoundException;
 import it.peluso.balance.model.request.CategoryRequest;
 import it.peluso.balance.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,14 +48,10 @@ public class CategoryController {
     }
 
     @PostMapping
-    public ResponseEntity<Category> createCategory(@RequestBody CategoryRequest request) {
-        try{
+    public ResponseEntity<Category> createCategory(@RequestBody CategoryRequest request) throws CategoryAlreadyExistsException {
             return new ResponseEntity<>(
                     service.saveCategory(request),
                     HttpStatus.CREATED
             );
-        } catch (Exception e) {
-            return null;
-        }
     }
 }

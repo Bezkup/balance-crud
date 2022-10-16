@@ -1,13 +1,15 @@
 package it.peluso.balance.service;
 
 import it.peluso.balance.entity.Category;
-import it.peluso.balance.exception.CategoryNotFoundException;
+import it.peluso.balance.exception.category.CategoryAlreadyExistsException;
+import it.peluso.balance.exception.category.CategoryNotFoundException;
 import it.peluso.balance.model.request.CategoryRequest;
 import it.peluso.balance.repository.CategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 //TODO: this is just a draft to allow postman to add new categories
 @Service
@@ -29,14 +31,16 @@ public class CategoryService {
     }
 
     public long findCategoryIDByName(String name) throws CategoryNotFoundException {
-        return repository.findIDByCategory(name)
+        return repository.findByCategory(name)
                 .orElseThrow(() -> new CategoryNotFoundException("Nessuna categoria trovata con nome: " + name))
                 .getId();
     }
 
-    public Category saveCategory(CategoryRequest request) {
+    public Category saveCategory(CategoryRequest request) throws CategoryAlreadyExistsException {
         Category category = new Category();
         category.setCategory(request.getCategory());
+        if (repository.existsByCategory(category.getCategory()))
+            throw new CategoryAlreadyExistsException("La categoria " + category.getCategory() + " è già esistente");
         return repository.save(category);
     }
 

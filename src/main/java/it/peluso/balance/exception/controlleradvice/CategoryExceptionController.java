@@ -1,6 +1,7 @@
 package it.peluso.balance.exception.controlleradvice;
 
-import it.peluso.balance.exception.CategoryNotFoundException;
+import it.peluso.balance.exception.category.CategoryAlreadyExistsException;
+import it.peluso.balance.exception.category.CategoryNotFoundException;
 import it.peluso.balance.exception.ErrorResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -15,5 +16,12 @@ public class CategoryExceptionController {
     public @ResponseBody ErrorResponse handleCategoryNotFound(CategoryNotFoundException ex)
     {
         return new ErrorResponse(HttpStatus.NOT_FOUND.value(), ex.getMessage());
+    }
+
+    @ExceptionHandler(value = CategoryAlreadyExistsException.class)
+    @ResponseStatus(HttpStatus.CONFLICT)
+    public @ResponseBody ErrorResponse handleCategoryAlreadyExist(CategoryAlreadyExistsException ex)
+    {
+        return new ErrorResponse(HttpStatus.CONFLICT.value(), ex.getMessage());
     }
 }

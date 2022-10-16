@@ -12,7 +12,6 @@ public class ErrorResponse {
 
     public ErrorResponse(String message)
     {
-        super();
         this.message = message;
     }
 }
