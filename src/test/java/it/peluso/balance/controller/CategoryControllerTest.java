@@ -1,6 +1,7 @@
 package it.peluso.balance.controller;
 
 import it.peluso.balance.entity.Category;
+import it.peluso.balance.exception.BalanceErrors;
 import it.peluso.balance.model.request.CategoryRequest;
 import it.peluso.balance.service.CategoryService;
 import org.junit.jupiter.api.BeforeEach;
@@ -14,6 +15,8 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+
+import java.text.MessageFormat;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -53,7 +56,8 @@ public class CategoryControllerTest {
         String categoryName = "abcdefg";
         this.mockMvc.perform(get("/api/v1/categories?name=" + categoryName))
                 .andExpect(status().isNotFound())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.message").value("Nessuna categoria trovata con nome: " + categoryName));
+                .andDo(print())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.message").value(MessageFormat.format(BalanceErrors.ERR_CATEGORY_NOT_FOUND_BY_NAME.message,categoryName)));
     }
 
     @Test
@@ -65,6 +69,6 @@ public class CategoryControllerTest {
                         .content("{\"category\":\""+ category + "\"}"))
                             .andDo(print())
                             .andExpect(status().isConflict())
-                            .andExpect(MockMvcResultMatchers.jsonPath("$.message").value("La categoria " + category + " è già esistente"));
+                            .andExpect(MockMvcResultMatchers.jsonPath("$.message").value(MessageFormat.format(BalanceErrors.ERR_CATEGORY_ALREADY_EXISTS.message, category)));
     }
 }
