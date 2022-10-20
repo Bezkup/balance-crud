@@ -22,8 +22,8 @@ build
 *.iml
 *.ipr
 
-### OTHER FILES ###
-/src/main/resources/application.properties
+### OTHER FILES ### 
+#/src/main/resources/application.properties
 .gitattributes
 balancedata
 .gitignore
