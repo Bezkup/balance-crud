@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
+import java.util.HashMap;
 
 @RestController
 @RequestMapping(("/api/v1/transactions"))
@@ -40,5 +41,6 @@ public class TransactionController {
     @PostMapping
     public ResponseEntity<TransactionResponse> createTransaction(@RequestBody TransactionRequest request) throws InvalidBusinessTransactionException {
         return new ResponseEntity<>(service.saveTransaction(request), HttpStatus.OK);
+        HashMap<String,String>("ciao","ciao")
     }
 }
