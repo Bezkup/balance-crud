@@ -1,8 +1,11 @@
 package it.dreamteam.balance.controller;
 
+import it.dreamteam.balance.exception.category.CategoryNotFoundException;
 import it.dreamteam.balance.exception.transaction.InvalidBusinessTransactionException;
+import it.dreamteam.balance.model.request.TransactionRequest;
 import it.dreamteam.balance.model.response.TransactionResponse;
 import it.dreamteam.balance.service.TransactionService;
+import it.dreamteam.balance.util.TransactionType;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -11,7 +14,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.ResponseEntity;
-
+import static org.junit.jupiter.api.Assertions.assertThrowsExactly;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -49,12 +53,19 @@ public class TransactionControllerTestClass {
                 TransactionResponse.class,
                 requestMap
         );
-        Assertions.assertEquals(new ArrayList<>(), Objects.requireNonNull(response.getBody()).getResult());
+        assertEquals(new ArrayList<>(), Objects.requireNonNull(response.getBody()).getResult());
     }
 
     @Test
     @DisplayName("Check exception")
     public void getCorrectException() {
-        Assertions.assertThrowsExactly(InvalidBusinessTransactionException.class, () -> transactionService.saveTransaction(null));
+        assertThrowsExactly(InvalidBusinessTransactionException.class, () -> transactionService.saveTransaction(null));
+    }
+
+    @Test
+    @DisplayName("Throw exception if category doesn't exists")
+    public void throwExceptionIfCategoryDoesntExists(){
+        TransactionRequest transaction = new TransactionRequest(TransactionType.IN, 200, LocalDate.now(), "affitto", "ignazio");
+        assertThrowsExactly(CategoryNotFoundException.class, () -> transactionService.saveTransaction(transaction));
     }
 }
