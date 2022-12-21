@@ -7,6 +7,8 @@ import it.dreamteam.balance.model.request.TransactionRequest;
 import it.dreamteam.balance.model.response.TransactionResponse;
 import it.dreamteam.balance.repository.TransactionRepository;
 import it.dreamteam.balance.util.TransactionUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,10 +20,11 @@ import java.util.List;
 @Service
 public class TransactionService {
 
+    private final Logger log = LoggerFactory.getLogger(this.getClass());
     private final TransactionRepository repository;
 
     @Autowired
-    public TransactionService(TransactionRepository repository){
+    public TransactionService(TransactionRepository repository) {
         this.repository = repository;
     }
 
@@ -29,10 +32,10 @@ public class TransactionService {
         List<Transaction> transactions;
         List<TransactionModel> transactionModels = new ArrayList<>();
 
-        if(startDate == null) {
+        if (startDate == null) {
             startDate = LocalDate.EPOCH;
         }
-        if(endDate == null) {
+        if (endDate == null) {
             endDate = LocalDate.now();
         }
 
@@ -55,5 +58,9 @@ public class TransactionService {
         return new TransactionResponse(
                 Collections.singletonList(TransactionUtil.transactionEntityToResponseModel(response))
         );
+    }
+
+    public void deleteTransactionById(long id){
+        repository.deleteTransactionById(id);
     }
 }

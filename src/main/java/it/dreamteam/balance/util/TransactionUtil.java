@@ -19,11 +19,8 @@ public class TransactionUtil {
 
     }
 
-    public static Category categoryRequestToEntity(CategoryModel categoryModel){
-        Category category = new Category();
-        category.setId(categoryModel.getId());
-        category.setCategory(categoryModel.getCategory());
-        return category;
+    public static Category categoryRequestToEntity(String category){
+        return new Category(category);
     }
 
     public static Transaction transactionRequestToEntity(TransactionRequest transactionRequest) throws InvalidBusinessTransactionException {
@@ -33,6 +30,7 @@ public class TransactionUtil {
 
         Category category = categoryRequestToEntity(transactionRequest.getCategory());
         return Transaction.builder()
+                .description(transactionRequest.getDescription())
                 .transactionType(transactionRequest.getTransactionType())
                 .amount(transactionRequest.getAmount())
                 .transactionDate(transactionRequest.getTransactionDate())
@@ -54,35 +52,17 @@ public class TransactionUtil {
                 .build();
     }
 
-    public static TransactionModel transactionRequestToModel(TransactionRequest request){
-        CategoryModel categoryModel = new CategoryModel();
-        categoryModel.setId(request.getCategory().getId());
-        categoryModel.setCategory(request.getCategory().getCategory());
-        return TransactionModel.builder()
-                .transactionDate(request.getTransactionDate())
-                .transactionType(request.getTransactionType())
-                .category(categoryModel)
-                .amount(request.getAmount())
-                .description(request.getDescription())
-                .build();
-    }
-
-//    public TransactionList transactionListMapper(List<Transaction> transactions){
-//
-//    }
-//    public static TransactionResponse transactionEntityToResponse(Transaction transaction) {
-//        return TransactionResponse.builder()
-//                .transactionType(transactionRequest.getTransactionType())
-//                .amount(transactionRequest.getAmount())
-//                .transactionDate(transactionRequest.getTransactionDate())
-//                .category(
-//                        Category.builder().
-//                                category(transactionRequest.getCategory())
-//                                .build()
-//                ).build();
+    //TODO
+//    public static TransactionModel transactionRequestToModel(TransactionRequest request) {
+//        Category category =
+//        CategoryModel categoryModel = new CategoryModel(request.getCategory());
+//        return TransactionModel.builder()
+//                .transactionDate(request.getTransactionDate())
+//                .transactionType(request.getTransactionType())
+//                .category(categoryModel)
+//                .amount(request.getAmount())
+//                .description(request.getDescription())
+//                .build();
 //    }
 
-//    public static Transaction transactionRequestToResponse(TransactionRequest transactionRequest) {
-//        return TransactionResponse.builder().errorMessage()
-//    }
 }

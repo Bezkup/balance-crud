@@ -11,4 +11,6 @@ import java.util.List;
 public interface TransactionRepository extends JpaRepository<Transaction, Long> {
     List<Transaction> findTransactionByCategoryId(Long category_id);
     List<Transaction> findTransactionsByTransactionDateBetween(LocalDate startDate, LocalDate endDate);
+
+    void deleteTransactionById(long id);
 }
