@@ -30,7 +30,7 @@ public class Transaction {
 
     private String description;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "category_id" )
     @ToString.Exclude
     private Category category;
