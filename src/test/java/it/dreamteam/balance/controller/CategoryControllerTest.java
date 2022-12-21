@@ -1,9 +1,10 @@
 package it.dreamteam.balance.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import it.dreamteam.balance.entity.Category;
 import it.dreamteam.balance.exception.BalanceErrors;
-import it.dreamteam.balance.model.request.CategoryRequest;
 import it.dreamteam.balance.service.CategoryService;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -32,22 +33,28 @@ public class CategoryControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
-
+    private static AutoCloseable closeable;
     @BeforeEach
     public void setup() {
-        MockitoAnnotations.openMocks(this);
+        closeable = MockitoAnnotations.openMocks(this);
+    }
+
+    @AfterAll
+    public static void close() throws Exception {
+        closeable.close();
     }
 
     @Test
     @DisplayName("get id category from name")
     public void getIdFromCategoryName() throws Exception {
-        Category newCategory = categoryService.saveCategory(new CategoryRequest("TestGetID"));
+        Category newCategory = categoryService.saveCategory("TestGetID");
         MvcResult result = this.mockMvc.perform(get("/api/v1/categories?name=" + newCategory.getCategory()))
                 .andExpect(status().isOk())
                 .andDo(print())
                 .andReturn();
-        assertEquals(newCategory.getId().toString(), result.getResponse().getContentAsString());
         categoryService.deleteCategory(newCategory.getId());
+        Category response = new ObjectMapper().readValue(result.getResponse().getContentAsString(), Category.class);
+        assertEquals(response.getCategory(), newCategory.getCategory());
     }
 
     @Test
@@ -63,6 +70,7 @@ public class CategoryControllerTest {
     @Test
     @DisplayName("Throw exception if category already exists")
     public void throwExceptionIfAlreadyExists() throws Exception {
+        Category test = categoryService.saveCategory("Test");
         String category = "Test";
         this.mockMvc.perform(post("/api/v1/categories")
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
@@ -70,5 +78,6 @@ public class CategoryControllerTest {
                             .andDo(print())
                             .andExpect(status().isConflict())
                             .andExpect(MockMvcResultMatchers.jsonPath("$.message").value(MessageFormat.format(BalanceErrors.ERR_CATEGORY_ALREADY_EXISTS.message, category)));
+        categoryService.deleteCategory(test.getId());
     }
 }
