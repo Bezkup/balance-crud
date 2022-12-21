@@ -4,12 +4,12 @@ import it.dreamteam.balance.entity.Category;
 import it.dreamteam.balance.exception.BalanceErrors;
 import it.dreamteam.balance.exception.category.CategoryAlreadyExistsException;
 import it.dreamteam.balance.exception.category.CategoryNotFoundException;
-import it.dreamteam.balance.model.request.CategoryRequest;
 import it.dreamteam.balance.repository.CategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class CategoryService {
@@ -29,23 +29,19 @@ public class CategoryService {
         return repository.findById(id).orElseThrow(() -> new CategoryNotFoundException(BalanceErrors.ERR_CATEGORY_NOT_FOUND_BY_ID, id));
     }
 
-    public long findCategoryIDByName(String name) throws CategoryNotFoundException {
-        return repository.findByCategory(name)
-                .orElseThrow(() -> new CategoryNotFoundException(BalanceErrors.ERR_CATEGORY_NOT_FOUND_BY_NAME, name))
-                .getId();
+    public Optional<Category> findCategoryByName(String name) {
+        return repository.findByCategory(name);
     }
 
-    public Category saveCategory(CategoryRequest request) throws CategoryAlreadyExistsException {
-        Category category = new Category();
-        category.setCategory(request.getCategory());
-        if (repository.existsByCategory(category.getCategory()))
-            throw new CategoryAlreadyExistsException(BalanceErrors.ERR_CATEGORY_ALREADY_EXISTS, category.getCategory());
+    public Category saveCategory(String categoryName) throws CategoryAlreadyExistsException {
+        if (repository.existsByCategory(categoryName))
+            throw new CategoryAlreadyExistsException(BalanceErrors.ERR_CATEGORY_ALREADY_EXISTS, categoryName);
+        Category category = new Category(categoryName);
         return repository.save(category);
     }
 
-    public int deleteCategory(long id){
-        Category categoryToDelete = repository.findById(id).orElseThrow();
+    public void deleteCategory(long id) throws CategoryNotFoundException {
+        Category categoryToDelete = repository.findById(id).orElseThrow(() -> new CategoryNotFoundException(BalanceErrors.ERR_CATEGORY_NOT_FOUND_BY_ID, id));
         repository.delete(categoryToDelete);
-        return 1;
     }
 }
